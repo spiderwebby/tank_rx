@@ -1,0 +1,19 @@
+1: 1876-1044
+2: 1884-1048
+3: 1880-1056
+4: 1880-1044
+5: 1880-1048 (gear switch)
+6: 1880-1044
+7: 1880-1060
+8: 1880-1060
+
+
+
+
+Plot XY rather than time-based
+
+Using the xy flag, and providing a value in both B and C field, teleplot will display an YX line chart.
+
+     trajectory:12.3:45.67|xy
+
+Using clr flag when sending a telemetry will clear the previous values. This is useful when streaming cyclic data like lidar points.
