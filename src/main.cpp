@@ -20,6 +20,9 @@ const int LEFT_TRACK_ENABLE_PIN = 9;
 const int RIGHT_TRACK_ENABLE_PIN = 10;
 
 int rx[channelAmount]={0,0,0,0,-255,0,0,0};
+//0-3 are the sticks
+//4 is the button
+//5-7 are knobs
 
 int speedDeadzone = 10; //0-255
 int steerDeadzone = 10; //0-255
@@ -49,19 +52,14 @@ void loop() {
     //Serial.println();
 
 
-    if(rx[4]>100) {
-        drive(rx[1], rx[0]);
-        Serial.print(">drive1:");
-        Serial.println(rx[1]);
-        
-        Serial.print(">drive0:");
-        Serial.println(rx[0]);
-        Serial.println(">button:pressed|t");
-    }
-    else {
-        Serial.println(">button:released|t");
-        drive(0,0);
-    }
+    drive(rx[1], rx[0]);
+    Serial.print(">drive1:");
+    Serial.println(rx[1]);
+    
+    Serial.print(">drive0:");
+    Serial.println(rx[0]);
+    Serial.println(">button:pressed|t");
+
 
     delay(20);
     
@@ -79,7 +77,12 @@ void drive(int speed, int steer)
     
     //steering mixer
     leftTrack = (-speed - steer)/2;
+    leftTrack = (leftTrack < 255) ? leftTrack : 255; //cap max values
+    leftTrack = (leftTrack > 240) ? 255: leftTrack;  //top deadzone
+    
     rightTrack = (-speed + steer)/2;
+    rightTrack = (rightTrack < 255) ? rightTrack : 255;
+    rightTrack = (rightTrack > 240) ? 255: rightTrack;
 
     if(leftTrack == 0) {
         analogWrite(LEFT_TRACK_ENABLE_PIN, 0);
@@ -93,7 +96,8 @@ void drive(int speed, int steer)
             digitalWrite(LEFT_TRACK_FORWARDS_PIN, 0);
             digitalWrite(LEFT_TRACK_BACKWARDS_PIN, 1);
         }
-        analogWrite(LEFT_TRACK_ENABLE_PIN, abs(leftTrack));
+        //analogWrite(LEFT_TRACK_ENABLE_PIN, abs(leftTrack));
+        analogWrite(LEFT_TRACK_ENABLE_PIN, map(abs(leftTrack),0,255,rx[4],255));
     }
 
     if(rightTrack == 0) {
