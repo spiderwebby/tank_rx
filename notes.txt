@@ -7,7 +7,7 @@
 7: 1880-1060
 8: 1880-1060
 
-todo: add response curves to sticks. or atleast minimum values for on.
+todo: add response curves to sticks. This thing is Spicyfast!
 
 
 Plot XY rather than time-based

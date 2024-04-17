@@ -10,6 +10,19 @@
          },
          "series": [
             {
+               "name": "rx0 ",
+               "sourceNames": [
+                  "rx0 "
+               ],
+               "formula": "",
+               "options": {
+                  "_serie": "rx0 ",
+                  "stroke": "rgba(231,76,60,1)",
+                  "fill": "rgba(231,76,60,0.1)"
+               },
+               "type": "number"
+            },
+            {
                "name": "rx1 ",
                "sourceNames": [
                   "rx1 "
@@ -17,19 +30,6 @@
                "formula": "",
                "options": {
                   "_serie": "rx1 ",
-                  "stroke": "rgba(231,76,60,1)",
-                  "fill": "rgba(231,76,60,0.1)"
-               },
-               "type": "number"
-            },
-            {
-               "name": "rx2 ",
-               "sourceNames": [
-                  "rx2 "
-               ],
-               "formula": "",
-               "options": {
-                  "_serie": "rx2 ",
                   "stroke": "rgba(52,152,219,1)",
                   "fill": "rgba(52,152,219,0.1)"
                },
@@ -47,6 +47,19 @@
          },
          "series": [
             {
+               "name": "rx2 ",
+               "sourceNames": [
+                  "rx2 "
+               ],
+               "formula": "",
+               "options": {
+                  "_serie": "rx2 ",
+                  "stroke": "rgba(231,76,60,1)",
+                  "fill": "rgba(231,76,60,0.1)"
+               },
+               "type": "number"
+            },
+            {
                "name": "rx3 ",
                "sourceNames": [
                   "rx3 "
@@ -54,19 +67,6 @@
                "formula": "",
                "options": {
                   "_serie": "rx3 ",
-                  "stroke": "rgba(231,76,60,1)",
-                  "fill": "rgba(231,76,60,0.1)"
-               },
-               "type": "number"
-            },
-            {
-               "name": "rx4 ",
-               "sourceNames": [
-                  "rx4 "
-               ],
-               "formula": "",
-               "options": {
-                  "_serie": "rx4 ",
                   "stroke": "rgba(52,152,219,1)",
                   "fill": "rgba(52,152,219,0.1)"
                },
@@ -95,18 +95,7 @@
                   "fill": "rgba(231,76,60,0.1)"
                },
                "type": "number"
-            }
-         ]
-      },
-      {
-         "type": "chart",
-         "gridPos": {
-            "h": 6,
-            "w": 6,
-            "x": 0,
-            "y": 0
-         },
-         "series": [
+            },
             {
                "name": "rx6 ",
                "sourceNames": [
@@ -115,22 +104,11 @@
                "formula": "",
                "options": {
                   "_serie": "rx6 ",
-                  "stroke": "rgba(231,76,60,1)",
-                  "fill": "rgba(231,76,60,0.1)"
+                  "stroke": "rgba(52,152,219,1)",
+                  "fill": "rgba(52,152,219,0.1)"
                },
                "type": "number"
-            }
-         ]
-      },
-      {
-         "type": "chart",
-         "gridPos": {
-            "h": 6,
-            "w": 6,
-            "x": 0,
-            "y": 0
-         },
-         "series": [
+            },
             {
                "name": "rx7 ",
                "sourceNames": [
@@ -139,8 +117,21 @@
                "formula": "",
                "options": {
                   "_serie": "rx7 ",
-                  "stroke": "rgba(231,76,60,1)",
-                  "fill": "rgba(231,76,60,0.1)"
+                  "stroke": "rgba(46,204,113,1)",
+                  "fill": "rgba(46,204,113,0.1)"
+               },
+               "type": "number"
+            },
+            {
+               "name": "rx4 ",
+               "sourceNames": [
+                  "rx4 "
+               ],
+               "formula": "",
+               "options": {
+                  "_serie": "rx4 ",
+                  "stroke": "rgba(155,89,182,1)",
+                  "fill": "rgba(155,89,182,0.1)"
                },
                "type": "number"
             }
@@ -156,20 +147,33 @@
          },
          "series": [
             {
-               "name": "rx8 ",
+               "name": "leftTrack",
                "sourceNames": [
-                  "rx8 "
+                  "leftTrack"
                ],
                "formula": "",
                "options": {
-                  "_serie": "rx8 ",
+                  "_serie": "leftTrack",
                   "stroke": "rgba(231,76,60,1)",
                   "fill": "rgba(231,76,60,0.1)"
+               },
+               "type": "number"
+            },
+            {
+               "name": "rightTrack",
+               "sourceNames": [
+                  "rightTrack"
+               ],
+               "formula": "",
+               "options": {
+                  "_serie": "rightTrack",
+                  "stroke": "rgba(52,152,219,1)",
+                  "fill": "rgba(52,152,219,0.1)"
                },
                "type": "number"
             }
          ]
       }
    ],
-   "viewDuration": "900"
+   "viewDuration": "60"
 }
