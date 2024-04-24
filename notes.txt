@@ -7,7 +7,8 @@
 7: 1880-1060
 8: 1880-1060
 
-todo: add response curves to sticks. This thing is Spicyfast!
+todo: add the PID variables to the aux controls on the TX 
+     time to do the delayless blink sketch thing. 
 
 
 Plot XY rather than time-based
