@@ -1,9 +1,11 @@
 #include <Arduino.h>
 #include <PPMReader.h>
-#include <Adafruit_MPU6050.h>
-#include <Adafruit_Sensor.h>
+//#include <Adafruit_MPU6050.h>
+//#include <Adafruit_Sensor.h>
 #include <Wire.h>
-#include <QuickPID.h>
+// #include <QuickPID.h>
+
+#define debug 1
 
 //! /////////////////////////////////////// !//
 //!         KEEP STUFF MODULAR!             !//
@@ -33,38 +35,44 @@ int rx[channelAmount] = {0, 0, 0, 0, 0, 0, 0, 0};
 const int speedDeadzone = 25; // 0-255 //10 is the noisefloor
 const int steerDeadzone = 25; // 0-255
 const int trackDeadzone = 1;
+int leftTrack = 0;      //left track speed
+int rightTrack = 0;     //right track speed
+
+
 int trackPreload = 0;
 int16_t AcX, AcY, AcZ, Tmp, GyX, GyY, GyZ; // acceleromiter/gyro stuff
 
-float setpoint, input, output; // PID stuff
-float Kp = 2, Ki = 5, Kd = 1;
-QuickPID myPID(&input, &output, &setpoint);
+// float setpoint, input, output; // PID stuff
+// float Kp = 2, Ki = 5, Kd = 1;
+// QuickPID myPID(&input, &output, &setpoint);
 
-Adafruit_MPU6050 mpu;
-sensors_event_t a, g, temp;
+//Adafruit_MPU6050 mpu;
+//sensors_event_t a, g, temp;
 
 void drive(int, int);
-void readMPU(bool printout = 0);
+// void readMPU(bool printout = 0);
 
 void setup()
 {
-    Serial.begin(115200);
+    #if debug == 1
+        Serial.begin(115200);
+    #endif
     pinMode(LEFT_TRACK_FORWARDS_PIN, OUTPUT);
     pinMode(LEFT_TRACK_BACKWARDS_PIN, OUTPUT);
     pinMode(RIGHT_TRACK_FORWARDS_PIN, OUTPUT);
     pinMode(RIGHT_TRACK_BACKWARDS_PIN, OUTPUT);
     pinMode(LEFT_TRACK_ENABLE_PIN, OUTPUT);
     pinMode(RIGHT_TRACK_ENABLE_PIN, OUTPUT);
-    mpu.begin();
-    mpu.setAccelerometerRange(MPU6050_RANGE_8_G);
-    mpu.setGyroRange(MPU6050_RANGE_500_DEG);
-    mpu.setFilterBandwidth(MPU6050_BAND_21_HZ);
+    // mpu.begin();
+    // mpu.setAccelerometerRange(MPU6050_RANGE_8_G);
+    // mpu.setGyroRange(MPU6050_RANGE_500_DEG);
+    // mpu.setFilterBandwidth(MPU6050_BAND_21_HZ);
 
-    readMPU();
+    // readMPU();
 
-    setpoint = 0;
-    myPID.SetTunings(Kp, Ki, Kd);
-    myPID.SetMode(myPID.Control::automatic);
+    // setpoint = 0;
+    // myPID.SetTunings(Kp, Ki, Kd);
+    // myPID.SetMode(myPID.Control::automatic);
     delay(100);
 }
 
@@ -82,50 +90,53 @@ void loop()
             rx[channel] = 255;
         else if (rx[channel] < -255)
             rx[channel] = -255;
+            
+        #if debug == 1
         Serial.print(">rx");
         Serial.print(channel);
         Serial.print(" : ");
         Serial.print(rx[channel]);
         // Serial.print("§deg");
         Serial.print("\n");
+        #endif
     }
 
     drive(rx[1], rx[0]);
 
-    readMPU(1);
+    //readMPU(1);
 
     delay(20);
 }
 
-void readMPU(bool printout)
-{
+// void readMPU(bool printout)
+// {
 
-    mpu.getEvent(&a, &g, &temp);
+//     mpu.getEvent(&a, &g, &temp);
 
-    if (printout)
-        Serial.print(">AcX:");
-    Serial.println(a.acceleration.x);
-    Serial.print(">AcY:");
-    Serial.println(a.acceleration.y);
-    Serial.print(">AcZ:");
-    Serial.println(a.acceleration.z);
+//     if (printout)
+//         Serial.print(">AcX:");
+//     Serial.println(a.acceleration.x);
+//     Serial.print(">AcY:");
+//     Serial.println(a.acceleration.y);
+//     Serial.print(">AcZ:");
+//     Serial.println(a.acceleration.z);
 
-    Serial.print(">GyX:");
-    Serial.println(g.gyro.x);
-    Serial.print(">GyY:");
-    Serial.println(g.gyro.y);
-    Serial.print(">GyZ:");
-    Serial.println(g.gyro.z);
+//     Serial.print(">GyX:");
+//     Serial.println(g.gyro.x);
+//     Serial.print(">GyY:");
+//     Serial.println(g.gyro.y);
+//     Serial.print(">GyZ:");
+//     Serial.println(g.gyro.z);
 
-    Serial.print(">temp:");
-    Serial.println(temp.temperature);
-}
+//     Serial.print(">temp:");
+//     Serial.println(temp.temperature);
+// }
 
 void drive(int speed, int steer)
 {
     // expects -255 to +255 inputs. forward +, right +
-    int leftTrack = 0;
-    int rightTrack = 0;
+    leftTrack = 0;
+    rightTrack = 0;
     trackPreload = (rx[5] + 257) / 4;
 
     if ((speed < speedDeadzone) && (speed > -speedDeadzone))
@@ -141,12 +152,14 @@ void drive(int speed, int steer)
     else
         steer = steer - speedDeadzone;
 
-    Serial.print(">speed:");
-    Serial.println(speed);
+    
+    #if debug == 1
+        Serial.print(">speed:");
+        Serial.println(speed);
 
-    Serial.print(">steer:");
-    Serial.println(steer);
-
+        Serial.print(">steer:");
+        Serial.println(steer);
+    #endif
     // steering mixer
     leftTrack = speed + steer;
     rightTrack = speed - steer;
@@ -180,10 +193,13 @@ void drive(int speed, int steer)
     rightTrack = (rightTrack > -255) ? rightTrack : -255;
     // rightTrack = (rightTrack > 240) ? 255: rightTrack;
 
-    Serial.print(">trackDeadZone:");
-    Serial.println(trackDeadzone);
-    Serial.print(">negtrackDeadZone:");
-    Serial.println(-trackDeadzone);
+    
+    #if debug == 1
+        Serial.print(">trackDeadZone:");
+        Serial.println(trackDeadzone);
+        Serial.print(">negtrackDeadZone:");
+        Serial.println(-trackDeadzone);
+    #endif
 
     if ((leftTrack < trackDeadzone) && (leftTrack > -trackDeadzone))
     {
@@ -231,10 +247,13 @@ void drive(int speed, int steer)
         analogWrite(RIGHT_TRACK_ENABLE_PIN, abs(rightTrack));
     }
 
-    Serial.print(">leftTrack:");
-    Serial.println(leftTrack);
-    Serial.print(">rightTrack:");
-    Serial.println(rightTrack);
+    
+    #if debug == 1
+        Serial.print(">leftTrack:");
+        Serial.println(leftTrack);
+        Serial.print(">rightTrack:");
+        Serial.println(rightTrack);
+    #endif
     /*
         if(rightTrack == 0) {
             analogWrite(RIGHT_TRACK_ENABLE_PIN, 0);
